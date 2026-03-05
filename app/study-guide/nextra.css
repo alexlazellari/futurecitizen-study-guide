@@ -1,0 +1,135 @@
+@import "nextra-theme-docs/style.css";
+
+/* Content styling for MDX with IDs - scoped to study-guide only */
+
+.study-guide-root main p:not(:first-child) {
+  margin-top: 1.25em;
+}
+
+.study-guide-root main p {
+  line-height: 1.75rem;
+}
+
+.study-guide-root main h1 {
+  margin-top: 0.5rem;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.study-guide-root main h2 {
+  margin-top: 2.5rem;
+  padding-bottom: 0.25rem;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  border-bottom: 1px solid var(--x-color-gray-200, #e5e7eb);
+}
+
+.study-guide-root main h3 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.study-guide-root main h4 {
+  margin-top: 2rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.study-guide-root main h5 {
+  margin-top: 2rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.study-guide-root main h6 {
+  margin-top: 2rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.study-guide-root main ul:not(:first-child) {
+  margin-top: 1.25em;
+}
+
+.study-guide-root main ul {
+  margin-inline-start: 1.5em;
+  list-style-type: disc;
+}
+
+.study-guide-root main ol:not(:first-child) {
+  margin-top: 1.25em;
+}
+
+.study-guide-root main ol {
+  margin-inline-start: 1.5rem;
+  list-style-type: decimal;
+}
+
+.study-guide-root main :is(ul, ol) :is(ul, ol) {
+  margin-top: 0.75em;
+  margin-bottom: 0.75em;
+}
+
+.study-guide-root main li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.study-guide-root main a {
+  color: var(--x-color-primary-600, #2563eb);
+  text-decoration: underline;
+  text-decoration-thickness: from-font;
+  text-underline-position: from-font;
+}
+
+.study-guide-root main a:hover {
+  text-decoration: none;
+}
+
+.study-guide-root main strong {
+  font-weight: 600;
+}
+
+.study-guide-root main blockquote:not(:first-child) {
+  margin-top: 1.25em;
+}
+
+.study-guide-root main blockquote {
+  padding-inline-start: 1.5em;
+  border-inline-start: 2px solid var(--x-color-gray-300, #d1d5db);
+  font-style: italic;
+  color: var(--x-color-gray-700, #374151);
+}
+
+.study-guide-root main figure {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.study-guide-root main figcaption {
+  margin-top: 0.5em;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--x-color-gray-500, #6b7280);
+  text-align: center;
+  font-style: italic;
+}
+
+.study-figure-light-bg {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
