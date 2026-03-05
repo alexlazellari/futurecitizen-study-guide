@@ -43,7 +43,7 @@ const navbar = (
       <StudyGuideLogo
         size="sm"
         textClassName="flex flex-col leading-none"
-        asLink={false}
+        asLink={true}
       />
     }
   >
