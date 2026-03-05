@@ -7,7 +7,7 @@
     "build": "next build && npm run pagefind",
     "start": "next start",
     "lint": "eslint",
-    "pagefind": "pagefind --site out --output-path out/_pagefind"
+    "pagefind": "pagefind --site .next/server/app --output-path public/study-guide/_pagefind"
   },
   "dependencies": {
     "next": "16.1.6",
