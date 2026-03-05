@@ -1,0 +1,3 @@
+{
+  "buildCommand": "next build && pagefind --site .next/server/app --output-path .vercel/output/static/study-guide/_pagefind"
+}
