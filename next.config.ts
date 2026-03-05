@@ -7,10 +7,12 @@ const withNextra = nextra({
 });
 
 const nextConfig: NextConfig = {
+  output: "export",
   assetPrefix:
     process.env.NODE_ENV === "production"
       ? "https://lifeintheuk-study-guide.vercel.app"
       : undefined,
+  images: { unoptimized: true },
   turbopack: {
     root: path.resolve(__dirname),
     resolveAlias: {
