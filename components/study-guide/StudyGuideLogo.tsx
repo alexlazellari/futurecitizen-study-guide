@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.britready.uk";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.futurecitizen.co.uk";
 
 type LogoSize = "sm" | "md";
 
@@ -63,11 +63,11 @@ export function StudyGuideLogo({
               "font-(family-name:--font-space-grotesk) tracking-tight",
             )}
           >
-            <span className="font-bold text-slate-900 dark:text-slate-100">Brit</span><span className="font-medium text-slate-600 dark:text-slate-400">Ready</span>
+            <span className="font-bold text-slate-900 dark:text-slate-100">Future</span><span className="font-medium text-slate-600 dark:text-slate-400">Citizen</span>
           </span>
         </span>
       ) : (
-        <span className="sr-only">BritReady</span>
+        <span className="sr-only">FutureCitizen</span>
       )}
     </>
   );
@@ -79,11 +79,11 @@ export function StudyGuideLogo({
   );
 
   return asLink ? (
-    <a href={SITE_URL} aria-label="BritReady" className={wrapperClassName}>
+    <a href={SITE_URL} aria-label="FutureCitizen" className={wrapperClassName}>
       {content}
     </a>
   ) : (
-    <span aria-label="BritReady" className={wrapperClassName}>
+    <span aria-label="FutureCitizen" className={wrapperClassName}>
       {content}
     </span>
   );

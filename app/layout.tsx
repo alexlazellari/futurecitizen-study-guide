@@ -14,7 +14,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"] });
 
 const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.britready.uk"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.futurecitizen.co.uk"
 ).replace(/\/+$/, "");
 
 export const metadata: Metadata = {
@@ -26,13 +26,13 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Study Guide | BritReady",
+    title: "Study Guide | FutureCitizen",
     description:
       "Chapter-by-chapter Life in the UK study guide to support your test revision.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Study Guide | BritReady",
+    title: "Study Guide | FutureCitizen",
     description:
       "Study the Life in the UK handbook content with a clear online guide.",
   },
