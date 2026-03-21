@@ -69,7 +69,7 @@ export default async function RootLayout({
   const pageMap = await getPageMap("/");
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="light" style={{ colorScheme: "light" }} suppressHydrationWarning>
       <Head />
       <body className={`${geistSans.variable} ${spaceGrotesk.variable} antialiased`}>
         <div className="study-guide-root">
