@@ -3,6 +3,7 @@ import { Geist, Space_Grotesk } from "next/font/google";
 import { getPageMap } from "nextra/page-map";
 import { Layout, Navbar, Footer } from "nextra-theme-docs";
 import { Head } from "nextra/components";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import "./nextra.css";
 
@@ -85,6 +86,7 @@ export default async function RootLayout({
             {children}
           </Layout>
         </div>
+        <Analytics />
       </body>
     </html>
   );
