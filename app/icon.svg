@@ -2,16 +2,16 @@
   <!-- White background -->
   <rect width="32" height="32" rx="6" fill="white"/>
 
-  <!-- [ opening bracket — 4px padding all sides -->
-  <rect x="4"    y="4"    width="2.5" height="24"  fill="#4288c9"/>
-  <rect x="4"    y="4"    width="7"   height="2.5"  fill="#4288c9"/>
-  <rect x="4"    y="25.5" width="7"   height="2.5"  fill="#4288c9"/>
+  <!-- [ opening bracket — 5px padding all sides -->
+  <rect x="5"  y="5"  width="2"  height="22" fill="#4288c9"/>
+  <rect x="5"  y="5"  width="7"  height="2"  fill="#4288c9"/>
+  <rect x="5"  y="25" width="7"  height="2"  fill="#4288c9"/>
 
-  <!-- | cursor — centred at x=16 -->
-  <rect x="14.75" y="7"   width="2.5" height="18"  fill="#1e293b"/>
+  <!-- | cursor — centred at x=16, 3px inset from bracket top/bottom -->
+  <rect x="15" y="8"  width="2"  height="16" fill="#1e293b"/>
 
-  <!-- ] closing bracket — 4px padding all sides -->
-  <rect x="25.5" y="4"    width="2.5" height="24"  fill="#4288c9"/>
-  <rect x="21"   y="4"    width="7"   height="2.5"  fill="#4288c9"/>
-  <rect x="21"   y="25.5" width="7"   height="2.5"  fill="#4288c9"/>
+  <!-- ] closing bracket — 5px padding all sides -->
+  <rect x="25" y="5"  width="2"  height="22" fill="#4288c9"/>
+  <rect x="20" y="5"  width="7"  height="2"  fill="#4288c9"/>
+  <rect x="20" y="25" width="7"  height="2"  fill="#4288c9"/>
 </svg>
