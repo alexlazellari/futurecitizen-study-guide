@@ -45,3 +45,4 @@ next-env.d.ts
 
 # pagefind (build artifact)
 public/_pagefind/
+public/study-guide/_pagefind/

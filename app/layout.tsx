@@ -17,13 +17,15 @@ const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: 
 const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.futurecitizen.co.uk"
 ).replace(/\/+$/, "");
+const metadataBase = new URL("/study-guide/", siteUrl);
 
 export const metadata: Metadata = {
+  metadataBase,
   title: "Study Guide",
   description:
     "Read the Life in the UK study guide by chapter with clear summaries to prepare for citizenship and settlement.",
   alternates: {
-    canonical: `${siteUrl}/study-guide`,
+    canonical: "./",
   },
   openGraph: {
     type: "website",
