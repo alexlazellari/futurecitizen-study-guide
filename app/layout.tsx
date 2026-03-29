@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Geist, Space_Grotesk } from "next/font/google";
 import { getPageMap } from "nextra/page-map";
 import { Layout, Navbar, Footer } from "nextra-theme-docs";
 import { Head } from "nextra/components";
-import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import "./nextra.css";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 
 import { StudyGuideCtaButton } from "@/components/study-guide/StudyGuideCtaButton";
 import { StudyGuideFooter } from "@/components/study-guide/StudyGuideFooter";
@@ -84,7 +85,9 @@ export default async function RootLayout({
             {children}
           </Layout>
         </div>
-        <Analytics />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
       </body>
     </html>
   );
