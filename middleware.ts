@@ -36,5 +36,8 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   // Run on page requests; skip Next.js internals and static assets.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  // The bare "/" entry is required because Next.js prepends basePath
+  // ("/study-guide") to matchers, and the catch-all below would otherwise
+  // miss the basePath root itself (the study-guide home page).
+  matcher: ["/", "/((?!_next/static|_next/image|favicon.ico).*)"],
 };
