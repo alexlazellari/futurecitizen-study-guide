@@ -22,7 +22,10 @@ const metadataBase = new URL("/study-guide/", siteUrl);
 
 export const metadata: Metadata = {
   metadataBase,
-  title: "Study Guide",
+  title: {
+    default: "Life in the UK Study Guide | FutureCitizen",
+    template: "%s | Life in the UK Test | FutureCitizen",
+  },
   description:
     "Read the Life in the UK study guide by chapter with clear summaries to prepare for citizenship and settlement.",
   alternates: {
