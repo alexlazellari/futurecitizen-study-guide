@@ -30,10 +30,10 @@ export function StudyGuideLogo({
       )}
       aria-label="FutureCitizen"
     >
-      <span className="font-semibold text-[#4288c9]">future</span>
+      <span className="font-semibold text-[#4288c9]">Future</span>
       <span className="inline-flex items-baseline">
         <span className="font-light text-slate-500 dark:text-slate-400">[</span>
-        <span className="font-medium mx-0.5 text-slate-800 dark:text-slate-100">citizen</span>
+        <span className="font-medium mx-0.5 text-slate-800 dark:text-slate-100">Citizen</span>
         <span className="font-light text-slate-500 dark:text-slate-400">]</span>
       </span>
     </span>
