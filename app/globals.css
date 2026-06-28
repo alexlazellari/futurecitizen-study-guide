@@ -17,26 +17,47 @@ html {
  * :target animation fires at page load, before the scroll, so it finishes
  * off-screen and is never seen. */
 .sg-flash {
+  /* Padded so the highlight has breathing room around the text; the negative
+   * margin cancels the padding so layout doesn't shift. */
+  margin-inline: -0.4rem;
+  padding-inline: 0.4rem;
   border-radius: 0.375rem;
-  animation: sg-target-flash 2.6s ease-out 1;
+  animation: sg-flash-light 2.8s ease-out 1;
+}
+.dark .sg-flash {
+  animation: sg-flash-dark 2.8s ease-out 1;
 }
 
-@keyframes sg-target-flash {
+/* Soft "yellow fade" — a pale amber that fades out, kept readable (WCAG). */
+@keyframes sg-flash-light {
   0%,
-  25% {
-    background-color: rgba(250, 204, 21, 0.4);
-    box-shadow: 0 0 0 0.4rem rgba(250, 204, 21, 0.4);
+  20% {
+    background-color: #fde68a;
   }
   100% {
     background-color: transparent;
-    box-shadow: 0 0 0 0.4rem transparent;
   }
 }
 
-/* Respect reduced-motion: a static highlight instead of the flash. */
+/* Dark mode: a translucent, desaturated warm wash so light text stays legible. */
+@keyframes sg-flash-dark {
+  0%,
+  20% {
+    background-color: rgba(253, 224, 71, 0.16);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Respect reduced-motion: a static, subtle highlight instead of the fade. */
 @media (prefers-reduced-motion: reduce) {
   .sg-flash {
     animation: none;
-    background-color: rgba(250, 204, 21, 0.28);
+    background-color: #fef3c7;
+  }
+  .dark .sg-flash {
+    animation: none;
+    background-color: rgba(253, 224, 71, 0.14);
   }
 }
