@@ -17,14 +17,17 @@ html {
  * :target animation fires at page load, before the scroll, so it finishes
  * off-screen and is never seen. */
 /* Static, persistent highlight — no animation. Stays marked until the reader
- * reloads or jumps to a different anchor. Padded for breathing room; the
- * negative margin cancels the padding so layout doesn't shift. */
+ * reloads or jumps to a different anchor. An amber left-bar is the signal (it
+ * reads cleanly on the dark page AND on blue info callouts), plus a faint
+ * theme-adaptive neutral tint — avoids the muddy yellow-on-blue clash.
+ * Padded for breathing room; the negative margin cancels it so layout holds. */
 .sg-flash {
   margin-inline: -0.4rem;
   padding-inline: 0.4rem;
   border-radius: 0.375rem;
-  background-color: #fde68a;
+  background-color: rgba(0, 0, 0, 0.04);
+  box-shadow: inset 3px 0 0 0 #fbbf24;
 }
 .dark .sg-flash {
-  background-color: rgba(253, 224, 71, 0.18);
+  background-color: rgba(255, 255, 255, 0.06);
 }
