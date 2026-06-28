@@ -7,7 +7,7 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* Deep-linked passages (a question's "Open in study guide" link) should sit
+/* Deep-linked passages (a question's "Source in study guide" link) should sit
  * clear of the sticky Nextra navbar — its height is exposed as a CSS var. */
 :target {
   scroll-margin-top: calc(var(--nextra-navbar-height, 64px) + 1rem);
