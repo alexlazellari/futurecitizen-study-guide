@@ -3,19 +3,26 @@
 import { useEffect } from "react";
 
 /**
- * Flashes the deep-linked paragraph/heading when you arrive at it.
+ * Highlights the deep-linked paragraph/heading and KEEPS it highlighted — like
+ * the browser's native text-fragment highlight (#:~:text=) — until the reader
+ * clicks or navigates to a different anchor/page.
  *
- * A CSS `:target` animation fires at page load — before Next.js scrolls to the
- * anchor — so the flash finishes off-screen and is never seen. Instead we drive
- * it from JS: find the target, scroll it into view (scroll-margin clears the
- * navbar), then add `.sg-flash` so the highlight plays while it's visible.
- *
- * The element can render a beat after mount (especially in dev), so we poll for
- * it briefly before giving up.
+ * We drive it from JS rather than CSS `:target` because a `:target` style would
+ * apply at page load before Next scrolls, and we also want the "clear on next
+ * interaction" behavior. The element can render a beat after mount (especially
+ * in dev), so we poll for it briefly.
  */
 export function TargetHighlighter() {
   useEffect(() => {
     let cancelled = false;
+    let current: HTMLElement | null = null;
+
+    const clear = () => {
+      if (current) {
+        current.classList.remove("sg-flash");
+        current = null;
+      }
+    };
 
     const targetId = () => {
       const hash = window.location.hash;
@@ -27,34 +34,41 @@ export function TargetHighlighter() {
       }
     };
 
-    const flash = (attempt = 0) => {
+    const highlight = (attempt = 0) => {
       if (cancelled) return;
       const id = targetId();
       if (!id) return;
 
       const el = document.getElementById(id);
       if (!el) {
-        // Element not rendered yet — retry for ~2s, then give up.
-        if (attempt < 20) window.setTimeout(() => flash(attempt + 1), 100);
+        if (attempt < 20) window.setTimeout(() => highlight(attempt + 1), 100);
         return;
       }
 
+      clear(); // drop any previous highlight before marking the new target
       el.scrollIntoView({ block: "start" });
-      el.classList.remove("sg-flash");
-      // Force reflow so re-adding the class restarts the animation.
-      void el.offsetWidth;
       el.classList.add("sg-flash");
-      window.setTimeout(() => {
-        if (!cancelled) el.classList.remove("sg-flash");
-      }, 2700);
+      current = el;
     };
 
-    flash();
-    const onHashChange = () => flash();
+    highlight();
+
+    const onHashChange = () => highlight();
+    const onClick = () => clear();
     window.addEventListener("hashchange", onHashChange);
+    // Clear on the next click anywhere (matches the native text-fragment
+    // highlight). Arm it after a beat so the click/navigation that brought the
+    // reader here doesn't instantly clear the highlight.
+    const armClick = window.setTimeout(
+      () => document.addEventListener("click", onClick),
+      500,
+    );
+
     return () => {
       cancelled = true;
+      window.clearTimeout(armClick);
       window.removeEventListener("hashchange", onHashChange);
+      document.removeEventListener("click", onClick);
     };
   }, []);
 
