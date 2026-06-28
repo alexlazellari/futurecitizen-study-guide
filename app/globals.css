@@ -16,29 +16,15 @@ html {
 /* The flash is applied by TargetHighlighter on arrival, NOT via :target — a CSS
  * :target animation fires at page load, before the scroll, so it finishes
  * off-screen and is never seen. */
+/* Static, persistent highlight — no animation. Stays marked until the reader
+ * reloads or jumps to a different anchor. Padded for breathing room; the
+ * negative margin cancels the padding so layout doesn't shift. */
 .sg-flash {
-  /* Padded so the highlight has breathing room around the text; the negative
-   * margin cancels the padding so layout doesn't shift. */
   margin-inline: -0.4rem;
   padding-inline: 0.4rem;
   border-radius: 0.375rem;
   background-color: #fde68a;
-  animation: sg-fade-in 0.35s ease-out;
 }
 .dark .sg-flash {
   background-color: rgba(253, 224, 71, 0.18);
-}
-
-/* Gentle fade-in; the highlight then PERSISTS (like the browser's native
- * text-fragment highlight) until the reader clicks or navigates away. */
-@keyframes sg-fade-in {
-  from {
-    background-color: transparent;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sg-flash {
-    animation: none;
-  }
 }

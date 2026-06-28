@@ -3,14 +3,12 @@
 import { useEffect } from "react";
 
 /**
- * Highlights the deep-linked paragraph/heading and KEEPS it highlighted — like
- * the browser's native text-fragment highlight (#:~:text=) — until the reader
- * clicks or navigates to a different anchor/page.
+ * Highlights the deep-linked paragraph/heading and KEEPS it highlighted until
+ * the reader reloads or jumps to a different anchor. Clicking does NOT clear it.
  *
  * We drive it from JS rather than CSS `:target` because a `:target` style would
- * apply at page load before Next scrolls, and we also want the "clear on next
- * interaction" behavior. The element can render a beat after mount (especially
- * in dev), so we poll for it briefly.
+ * apply at page load before Next scrolls to the anchor. The element can render
+ * a beat after mount (especially in dev), so we poll for it briefly.
  */
 export function TargetHighlighter() {
   useEffect(() => {
@@ -53,22 +51,14 @@ export function TargetHighlighter() {
 
     highlight();
 
+    // Re-highlight if the reader jumps to a different anchor; otherwise it just
+    // stays until reload.
     const onHashChange = () => highlight();
-    const onClick = () => clear();
     window.addEventListener("hashchange", onHashChange);
-    // Clear on the next click anywhere (matches the native text-fragment
-    // highlight). Arm it after a beat so the click/navigation that brought the
-    // reader here doesn't instantly clear the highlight.
-    const armClick = window.setTimeout(
-      () => document.addEventListener("click", onClick),
-      500,
-    );
 
     return () => {
       cancelled = true;
-      window.clearTimeout(armClick);
       window.removeEventListener("hashchange", onHashChange);
-      document.removeEventListener("click", onClick);
     };
   }, []);
 
