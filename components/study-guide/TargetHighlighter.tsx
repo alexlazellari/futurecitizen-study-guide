@@ -7,40 +7,54 @@ import { useEffect } from "react";
  *
  * A CSS `:target` animation fires at page load — before Next.js scrolls to the
  * anchor — so the flash finishes off-screen and is never seen. Instead we drive
- * it from JS: just after mount (and on every hash change) we find the target,
- * scroll it into view ourselves (scroll-margin clears the navbar), then add the
- * `.sg-flash` class so the highlight plays while the passage is actually visible.
+ * it from JS: find the target, scroll it into view (scroll-margin clears the
+ * navbar), then add `.sg-flash` so the highlight plays while it's visible.
+ *
+ * The element can render a beat after mount (especially in dev), so we poll for
+ * it briefly before giving up.
  */
 export function TargetHighlighter() {
   useEffect(() => {
-    const flash = () => {
-      const hash = window.location.hash;
-      if (hash.length < 2) return;
+    let cancelled = false;
 
-      let id = hash.slice(1);
+    const targetId = () => {
+      const hash = window.location.hash;
+      if (hash.length < 2) return null;
       try {
-        id = decodeURIComponent(id);
+        return decodeURIComponent(hash.slice(1));
       } catch {
-        // fall back to the raw id
+        return hash.slice(1);
       }
+    };
+
+    const flash = (attempt = 0) => {
+      if (cancelled) return;
+      const id = targetId();
+      if (!id) return;
 
       const el = document.getElementById(id);
-      if (!el) return;
+      if (!el) {
+        // Element not rendered yet — retry for ~2s, then give up.
+        if (attempt < 20) window.setTimeout(() => flash(attempt + 1), 100);
+        return;
+      }
 
       el.scrollIntoView({ block: "start" });
       el.classList.remove("sg-flash");
       // Force reflow so re-adding the class restarts the animation.
       void el.offsetWidth;
       el.classList.add("sg-flash");
-      window.setTimeout(() => el.classList.remove("sg-flash"), 2700);
+      window.setTimeout(() => {
+        if (!cancelled) el.classList.remove("sg-flash");
+      }, 2700);
     };
 
-    // Let the browser/Next finish the initial scroll-to-anchor first.
-    const initial = window.setTimeout(flash, 250);
-    window.addEventListener("hashchange", flash);
+    flash();
+    const onHashChange = () => flash();
+    window.addEventListener("hashchange", onHashChange);
     return () => {
-      window.clearTimeout(initial);
-      window.removeEventListener("hashchange", flash);
+      cancelled = true;
+      window.removeEventListener("hashchange", onHashChange);
     };
   }, []);
 
