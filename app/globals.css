@@ -6,3 +6,31 @@
 html {
   scrollbar-gutter: stable;
 }
+
+/* Deep-linked passages (a question's "Source in study guide" link) should sit
+ * clear of the sticky Nextra navbar — its height is exposed as a CSS var. */
+:target {
+  scroll-margin-top: calc(var(--nextra-navbar-height, 64px) + 1rem);
+}
+
+/* The highlight is applied by TargetHighlighter on arrival (NOT via :target,
+ * which would fire before Next scrolls to the anchor). Static and persistent —
+ * it stays until the reader reloads or jumps to another anchor. Emerald bars
+ * bracket both edges over a soft emerald fill; per-theme shades keep WCAG
+ * contrast on the dark page, white, and blue callouts. Padded for breathing
+ * room; the negative margin cancels it so layout doesn't shift. */
+.sg-flash {
+  margin-inline: -0.4rem;
+  padding-inline: 0.4rem;
+  border-radius: 0.375rem;
+  background-color: rgba(16, 185, 129, 0.16);
+  box-shadow:
+    inset 3px 0 0 0 #047857,
+    inset -3px 0 0 0 #047857;
+}
+.dark .sg-flash {
+  background-color: rgba(52, 211, 153, 0.16);
+  box-shadow:
+    inset 3px 0 0 0 #34d399,
+    inset -3px 0 0 0 #34d399;
+}
