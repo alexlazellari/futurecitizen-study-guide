@@ -11,6 +11,7 @@ import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { StudyGuideCtaButton } from "@/components/study-guide/StudyGuideCtaButton";
 import { StudyGuideFooter } from "@/components/study-guide/StudyGuideFooter";
 import { StudyGuideLogo } from "@/components/study-guide/StudyGuideLogo";
+import { TargetHighlighter } from "@/components/study-guide/TargetHighlighter";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"] });
@@ -88,6 +89,7 @@ export default async function RootLayout({
             {children}
           </Layout>
         </div>
+        <TargetHighlighter />
         <Suspense fallback={null}>
           <GoogleAnalytics />
         </Suspense>

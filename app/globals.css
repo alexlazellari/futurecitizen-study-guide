@@ -7,18 +7,16 @@ html {
   scrollbar-gutter: stable;
 }
 
-/* When a question's "Open in study guide" link deep-links to #..., flash the
- * target paragraph/heading so it's obvious which passage answers the question.
- * scroll-margin-top keeps it clear of the sticky Nextra navbar. */
-p:target,
-h1:target,
-h2:target,
-h3:target,
-h4:target,
-li:target {
-  /* Clear the sticky Nextra navbar (its height is exposed as a CSS var) plus a
-   * little breathing room, so a deep-linked paragraph isn't tucked under it. */
+/* Deep-linked passages (a question's "Open in study guide" link) should sit
+ * clear of the sticky Nextra navbar — its height is exposed as a CSS var. */
+:target {
   scroll-margin-top: calc(var(--nextra-navbar-height, 64px) + 1rem);
+}
+
+/* The flash is applied by TargetHighlighter on arrival, NOT via :target — a CSS
+ * :target animation fires at page load, before the scroll, so it finishes
+ * off-screen and is never seen. */
+.sg-flash {
   border-radius: 0.375rem;
   animation: sg-target-flash 2.6s ease-out 1;
 }
@@ -35,14 +33,9 @@ li:target {
   }
 }
 
-/* Respect reduced-motion: keep a static highlight instead of the flash. */
+/* Respect reduced-motion: a static highlight instead of the flash. */
 @media (prefers-reduced-motion: reduce) {
-  p:target,
-  h1:target,
-  h2:target,
-  h3:target,
-  h4:target,
-  li:target {
+  .sg-flash {
     animation: none;
     background-color: rgba(250, 204, 21, 0.28);
   }
