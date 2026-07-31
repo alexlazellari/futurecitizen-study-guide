@@ -1,9 +1,8 @@
 export default {
-  index: {
-    title: "Overview",
-    type: "page",
-    href: "/ch4/the-uk-today",
-  },
+  // A real page rather than an href redirect to the first section: "a modern
+  // thriving society" is searched by name and had no page of its own to rank,
+  // so it was landing on the study-guide hub at position 21.
+  index: "Overview",
   "the-uk-today": "The UK today",
   religion: "Religion",
   "customs-and-traditions": "Customs and traditions",
