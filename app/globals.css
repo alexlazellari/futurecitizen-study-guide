@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+/* The brand blue, matching --primary in the app and marketing zones exactly
+ * (both #4288c9 in light and dark). Declared as tokens rather than a hardcoded
+ * hex on the button so the three zones name the same colour the same way, and
+ * so `bg-primary` / `hover:bg-primary/90` — the convention the shadcn button
+ * uses in the other two zones — works here too. This zone is Nextra rather
+ * than shadcn, so it has no theme layer of its own to inherit them from. */
+@theme {
+  --color-primary: #4288c9;
+  --color-primary-foreground: #ffffff;
+}
+
 /* allow `dark:` when `.dark` is on the same element OR an ancestor */
 @custom-variant dark (&:is(.dark, .dark *));
 
