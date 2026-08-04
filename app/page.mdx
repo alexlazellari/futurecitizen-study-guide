@@ -1,6 +1,21 @@
 ---
 title: "Life in the UK Test Study Guide 2026 – Free, All 5 Chapters"
 description: "Free Life in the UK study guide covering all five chapters of the official handbook — read online or download the PDF. Revision notes for the British citizenship and ILR test."
+# Overrides the layout's `canonical: "./"` for this page only. That idiom means
+# "metadataBase + this route's pathname", which is correct for every sub-page,
+# but this page's in-zone pathname is "/", so it resolved to /study-guide/ — a
+# URL that 308s straight back to /study-guide. A canonical pointing at a
+# redirect is non-indexable, so Google discarded it and guessed instead, on the
+# one page that links to all 30 others.
+#
+# Written as a full URL, not a path: Next joins a leading-slash value onto
+# metadataBase's own path rather than resolving it against the origin, so
+# "/study-guide" here produces /study-guide/study-guide. Removing the trailing
+# slash from metadataBase does not help either — the slash comes from the route
+# pathname, and Next normalises it back. Hardcoding the origin matches what
+# this file already does for the PDF link below.
+alternates:
+  canonical: "https://www.futurecitizen.co.uk/study-guide"
 ---
 
 import { Callout } from "nextra/components"
