@@ -24,8 +24,16 @@ const metadataBase = new URL("/study-guide/", siteUrl);
 export const metadata: Metadata = {
   metadataBase,
   title: {
-    default: "Life in the UK Study Guide | FutureCitizen",
-    template: "%s | Life in the UK Test | FutureCitizen",
+    default: "Life in the UK Study Guide",
+    // No brand suffix. It cost 16 characters on all 30 pages and pushed the
+    // keywords rightward for no return: a brand suffix earns clicks only from
+    // people who already recognise the brand, and nobody searches
+    // "FutureCitizen" yet. Dropping it took the pages over Google's ~60
+    // character title limit from 13 to 2. Google derives the site name from the
+    // homepage and often shows it alongside the title anyway, so this does not
+    // give up brand presence in the results. Worth revisiting if brand search
+    // volume ever appears.
+    template: "%s | Life in the UK Test",
   },
   description:
     "Read the Life in the UK study guide by chapter with clear summaries to prepare for citizenship and settlement.",
