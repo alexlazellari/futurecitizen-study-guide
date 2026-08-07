@@ -26,7 +26,10 @@ export function StudyGuideLogo({
     <span
       className={cn(
         label,
-        "inline-flex items-baseline gap-0.5 whitespace-nowrap font-(family-name:--font-space-grotesk) tracking-tight",
+        // Inherits Nextra's system font stack rather than naming a family.
+        // Space Grotesk was this zone's only webfont — 22KB fetched on every
+        // page for these four words.
+        "inline-flex items-baseline gap-0.5 whitespace-nowrap tracking-tight",
       )}
       aria-label="FutureCitizen"
     >

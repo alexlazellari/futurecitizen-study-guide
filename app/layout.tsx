@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Geist, Space_Grotesk } from "next/font/google";
 import { getPageMap } from "nextra/page-map";
 import { Layout, Navbar, Footer } from "nextra-theme-docs";
 import { Head } from "nextra/components";
@@ -13,8 +12,19 @@ import { StudyGuideFooter } from "@/components/study-guide/StudyGuideFooter";
 import { StudyGuideLogo } from "@/components/study-guide/StudyGuideLogo";
 import { TargetHighlighter } from "@/components/study-guide/TargetHighlighter";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"] });
+// No webfont in this zone at all, deliberately.
+//
+// nextra-theme-docs ships none of its own — it reads --x-default-font-family
+// and falls back to `ui-sans-serif, system-ui, sans-serif`, so the body text
+// has always rendered in whatever the reader's OS provides. That is why these
+// pages never flicker: there is nothing to wait for.
+//
+// Two were being declared here regardless. Geist was set on <body> as
+// --font-geist-sans and referenced by no CSS anywhere, so browsers never even
+// fetched it. Space Grotesk was real — 22KB on every page, on font-display:
+// swap, for the four words of the wordmark, which visibly flipped while the
+// body text around it did not. The wordmark now inherits the same system stack
+// as everything else.
 
 const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.futurecitizen.co.uk"
@@ -83,7 +93,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <Head />
-      <body className={`${geistSans.variable} ${spaceGrotesk.variable} antialiased`}>
+      <body className="antialiased">
         <div className="study-guide-root">
           <Layout
             navbar={navbar}
