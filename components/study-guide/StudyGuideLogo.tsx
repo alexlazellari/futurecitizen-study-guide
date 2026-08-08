@@ -29,15 +29,22 @@ export function StudyGuideLogo({
         // Inherits Nextra's system font stack rather than naming a family.
         // Space Grotesk was this zone's only webfont — 22KB fetched on every
         // page for these four words.
-        "inline-flex items-baseline gap-0.5 whitespace-nowrap tracking-tight",
+        // Inline rather than a flex row so the gap between the two words is a
+        // real space character: a flex container discards whitespace between
+        // its items, which would leave the document text closed up as one word
+        // while the site declares itself "Future Citizen".
+        "inline-block whitespace-nowrap tracking-tight",
       )}
-      aria-label="FutureCitizen"
     >
-      <span className="font-semibold text-[#4288c9]">Future</span>
-      <span className="inline-flex items-baseline">
-        <span className="font-light text-slate-500 dark:text-slate-400">[</span>
+      {/*
+        The document text here is exactly "Future Citizen". The brackets are
+        pseudo-element content from globals.css, so they render for readers
+        without becoming characters a crawler extracts — see the
+        .wordmark-brackets comment there for what happened when they were text.
+      */}
+      <span className="font-semibold text-[#4288c9]">Future</span>{" "}
+      <span className="wordmark-brackets inline-block">
         <span className="font-medium mx-0.5 text-slate-800 dark:text-slate-100">Citizen</span>
-        <span className="font-light text-slate-500 dark:text-slate-400">]</span>
       </span>
     </span>
   );
@@ -45,11 +52,11 @@ export function StudyGuideLogo({
   const wrapperClassName = cn("inline-flex items-center", className);
 
   return asLink ? (
-    <a href={SITE_URL} aria-label="FutureCitizen home" className={wrapperClassName}>
+    <a href={SITE_URL} aria-label="Future Citizen home" className={wrapperClassName}>
       {content}
     </a>
   ) : (
-    <span aria-label="FutureCitizen" className={wrapperClassName}>
+    <span aria-label="Future Citizen" className={wrapperClassName}>
       {content}
     </span>
   );

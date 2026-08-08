@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     // No brand suffix. It cost 16 characters on all 30 pages and pushed the
     // keywords rightward for no return: a brand suffix earns clicks only from
     // people who already recognise the brand, and nobody searches
-    // "FutureCitizen" yet. Dropping it took the pages over Google's ~60
+    // "Future Citizen" yet. Dropping it took the pages over Google's ~60
     // character title limit from 13 to 2. Google derives the site name from the
     // homepage and often shows it alongside the title anyway, so this does not
     // give up brand presence in the results. Worth revisiting if brand search
@@ -52,13 +52,13 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Study Guide | FutureCitizen",
+    title: "Study Guide | Future Citizen",
     description:
       "Chapter-by-chapter Life in the UK study guide to support your test revision.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Study Guide | FutureCitizen",
+    title: "Study Guide | Future Citizen",
     description:
       "Study the Life in the UK handbook content with a clear online guide.",
   },
