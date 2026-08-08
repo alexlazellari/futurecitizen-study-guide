@@ -116,7 +116,7 @@ export function StudyGuideFooter() {
       </div>
 
       <div className="mt-8 flex flex-col gap-3 border-t border-slate-200/70 pt-6 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between dark:border-neutral-800 dark:text-gray-400">
-        <div>© {year} FutureCitizen</div>
+        <div>© {year} Future Citizen</div>
         <div className="flex flex-wrap gap-x-4 gap-y-2">
           <a
             className="text-slate-600 hover:underline dark:text-slate-200"

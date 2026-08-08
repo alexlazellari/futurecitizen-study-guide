@@ -45,3 +45,46 @@ html {
     inset 3px 0 0 0 #34d399,
     inset -3px 0 0 0 #34d399;
 }
+
+/*
+ * Wordmark brackets as generated content, not as characters in the document.
+ *
+ * They used to be real text nodes, so every page in this zone read literally
+ * "Future[Citizen]". All three zones serve www.futurecitizen.co.uk, and Google
+ * took that string as the brand: a search for "future citizen" returned the
+ * homepage titled "Future[Citizen]" instead of its own <title>, and Google
+ * printed the bare domain rather than a site name beside every result. As
+ * pseudo-element content the brackets still render for readers and are no
+ * longer part of the text a crawler extracts, leaving "Future Citizen" — which
+ * is what og:site_name and the WebSite schema declare — as the only brand
+ * string on the page.
+ */
+.wordmark-brackets::before,
+.wordmark-brackets::after {
+  font-weight: 300;
+  color: var(--color-slate-500, #64748b);
+}
+.wordmark-brackets::before { content: "["; }
+.wordmark-brackets::after { content: "]"; }
+
+.dark .wordmark-brackets::before,
+.dark .wordmark-brackets::after {
+  color: var(--color-slate-400, #94a3b8);
+}
+
+.wordmark-cursor::after {
+  content: "|";
+  font-weight: 100;
+  color: var(--color-slate-500, #64748b);
+  animation: wordmark-cursor 1.4s ease-in-out infinite;
+}
+.dark .wordmark-cursor::after { color: var(--color-slate-400, #94a3b8); }
+
+@keyframes wordmark-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wordmark-cursor::after { animation: none; }
+}
