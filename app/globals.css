@@ -55,7 +55,7 @@ html {
  * homepage titled "Future[Citizen]" instead of its own <title>, and Google
  * printed the bare domain rather than a site name beside every result. As
  * pseudo-element content the brackets still render for readers and are no
- * longer part of the text a crawler extracts, leaving "Future Citizen" — which
+ * longer part of the text a crawler extracts, leaving "FutureCitizen" — which
  * is what og:site_name and the WebSite schema declare — as the only brand
  * string on the page.
  */
