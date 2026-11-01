@@ -52,10 +52,14 @@ function send(..._args: unknown[]): void {
  * apps, and would now have to repeat traffic_type on every call to be sure it
  * was kept. traffic_type is added here too because the config only picks up a
  * mark made mid-visit from the next full page load.
+ *
+ * page_path is read from the address bar, /study-guide included, like
+ * page_location. usePathname() leaves the basePath off, so this home page
+ * used to report "/", which is the marketing home's path.
  */
-function trackPageView(path: string) {
+function trackPageView() {
   send("event", "page_view", {
-    page_path: path,
+    page_path: window.location.pathname + window.location.search,
     page_location: window.location.href,
     page_title: document.title,
     ...(isInternalBrowser() ? { traffic_type: "internal" } : {}),
@@ -88,7 +92,7 @@ export function GoogleAnalytics() {
   useEffect(() => {
     if (!load || !pathname) return;
     applyInternalFlag(searchParams);
-    trackPageView(search ? `${pathname}?${search}` : pathname);
+    trackPageView();
     // searchParams changes whenever search does; search is the stable key.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [load, pathname, search]);
@@ -112,16 +116,21 @@ export function GoogleAnalytics() {
   //
   // - Through `set`, before `config`, NOT on the config: gtag reads a config
   //   parameter ahead of a `set` one, so an id on the config could never be
-  //   replaced or cleared without a reload.
+  //   replaced or cleared without a reload. Nothing on these pages replaces
+  //   it today; this keeps that possible, as it is in the app.
   // - Read by the snippet itself, when it runs, rather than read by React and
   //   inlined: the stored value never becomes part of the page, and it is
   //   read at the last moment before the tag's first hit.
   //
-  // If the app's session has lapsed without a sign-out, these pages keep
-  // reporting that id until the reader next opens an app page, which notices
-  // and forgets it. In its own function: the snippet runs as a top-level
-  // classic script, so a bare `var uid` would become window.uid for any other
-  // script to trip over.
+  // It is read once per full page load, and nothing here follows it after
+  // that. A sign-in or sign-out in an app tab therefore reaches an open
+  // study-guide tab only when that tab reloads: until then, on a shared
+  // device, it keeps reporting the previous account. The marketing app's tag
+  // reads it the same way. Likewise, if the app's session has lapsed without
+  // a sign-out, these pages keep reporting that id until the reader next
+  // opens an app page, which notices and forgets it. In its own function: the
+  // snippet runs as a top-level classic script, so a bare `var uid` would
+  // become window.uid for any other script to trip over.
   const userSet =
     `(function () { try { var uid = localStorage.getItem(${toScript(STORAGE_KEY_ANALYTICS_USER)});` +
     ` if (uid) gtag('set', { user_id: uid }); } catch (e) {} })();`;
