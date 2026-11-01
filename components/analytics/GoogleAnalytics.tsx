@@ -26,6 +26,26 @@ const STORAGE_KEY_ANALYTICS_USER = "lifeuk:analyticsUser";
 const toScript = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
 
 /**
+ * The snippet below defines window.gtag before the first page view is sent
+ * (see the page-view effect), so the queue here is only a fallback. If that
+ * order ever changed, the first page view of every visit would otherwise be
+ * dropped without an error; queued, it still reaches gtag.js, though ahead of
+ * the snippet's user_id and config. It must be the `arguments` object, not an
+ * array of them: gtag.js only reads an Arguments object in dataLayer as a
+ * command, which is why its own shim pushes `arguments`. Same as
+ * futurecitizen-app's send() in lib/analytics/track.ts.
+ */
+function send(..._args: unknown[]): void {
+  window.dataLayer = window.dataLayer ?? [];
+  if (window.gtag) {
+    window.gtag(..._args);
+    return;
+  }
+  // eslint-disable-next-line prefer-rest-params
+  window.dataLayer.push(arguments);
+}
+
+/**
  * A page_view event, as futurecitizen-app sends them. Until 1 November 2026
  * this re-issued `config` on every route change instead, which is the
  * Universal Analytics pattern rather than what GA4 documents for single-page
@@ -34,7 +54,7 @@ const toScript = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003
  * mark made mid-visit from the next full page load.
  */
 function trackPageView(path: string) {
-  window.gtag?.("event", "page_view", {
+  send("event", "page_view", {
     page_path: path,
     page_location: window.location.href,
     page_title: document.title,
