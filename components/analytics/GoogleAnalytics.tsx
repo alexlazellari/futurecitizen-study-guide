@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
+import { isAnalyticsHost } from "@/lib/analytics/hosts";
+import { applyInternalFlag, isInternalBrowser } from "@/lib/analytics/internal";
 
 declare global {
   interface Window {
@@ -13,13 +15,30 @@ declare global {
 
 const measurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
-function trackPageView(url: string) {
-  if (!measurementId) return;
+// The Firebase uid futurecitizen-app last signed in on this browser. That app
+// writes it on sign-in and removes it on sign-out; this one has no accounts,
+// so it only ever reads it. Shared through the www origin's localStorage, so
+// the name is the contract between the two.
+const STORAGE_KEY_ANALYTICS_USER = "lifeuk:analyticsUser";
 
-  window.gtag?.("config", measurementId, {
-    page_path: url,
+// Values here are inlined into a script tag, so a "</script>" in one must
+// not be able to close it.
+const toScript = (value: unknown) => JSON.stringify(value).replace(/</g, "\\u003c");
+
+/**
+ * A page_view event, as futurecitizen-app sends them. Until 1 November 2026
+ * this re-issued `config` on every route change instead, which is the
+ * Universal Analytics pattern rather than what GA4 documents for single-page
+ * apps, and would now have to repeat traffic_type on every call to be sure it
+ * was kept. traffic_type is added here too because the config only picks up a
+ * mark made mid-visit from the next full page load.
+ */
+function trackPageView(path: string) {
+  window.gtag?.("event", "page_view", {
+    page_path: path,
     page_location: window.location.href,
     page_title: document.title,
+    ...(isInternalBrowser() ? { traffic_type: "internal" } : {}),
   });
 }
 
@@ -28,16 +47,64 @@ export function GoogleAnalytics() {
   const searchParams = useSearchParams();
   const search = searchParams.toString();
 
+  // Decided on the client, once, because both answers live there: whether
+  // this is the real site (lib/analytics/hosts.ts) and whether this browser is
+  // marked as our own testing. Null until then, so neither the tag nor a page
+  // view goes out before both are known, and the server render matches.
+  const [load, setLoad] = useState<{ internal: boolean } | null>(null);
+
   useEffect(() => {
-    if (!pathname) return;
+    if (!measurementId || !isAnalyticsHost(window.location.hostname)) return;
+    // Before reading it, so the visit that sets ?internal=1 is marked too.
+    applyInternalFlag(new URLSearchParams(window.location.search));
+    setLoad({ internal: isInternalBrowser() });
+  }, []);
 
-    const url = search ? `${pathname}?${search}` : pathname;
-    trackPageView(url);
-  }, [pathname, search]);
+  // Fires once `load` is set, which is what sends the first page view: the
+  // snippet below suppresses the automatic one so that navigations and the
+  // initial load are reported the same way. The snippet has already run by
+  // then, because next/script runs an inline afterInteractive script in its
+  // own effect, and React runs a child's effects before its parent's.
+  useEffect(() => {
+    if (!load || !pathname) return;
+    applyInternalFlag(searchParams);
+    trackPageView(search ? `${pathname}?${search}` : pathname);
+    // searchParams changes whenever search does; search is the stable key.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [load, pathname, search]);
 
-  if (!measurementId) {
+  if (!load) {
     return null;
   }
+
+  // traffic_type goes on the config, not only on our page views. GA's
+  // automatic events (session_start, user_engagement, scroll) never pass
+  // through trackPageView, so tagging those alone would leave our visits in
+  // every report even with the Internal Traffic filter Active. Clearing the
+  // mark mid-visit takes effect from the next full page load.
+  const config = {
+    send_page_view: false,
+    ...(load.internal ? { traffic_type: "internal" } : {}),
+  };
+  // user_id makes a signed-in reader's study-guide pages theirs rather than
+  // an anonymous twin's, the same account futurecitizen-app's own tag
+  // reports. Two things about how, both as on that app's pages:
+  //
+  // - Through `set`, before `config`, NOT on the config: gtag reads a config
+  //   parameter ahead of a `set` one, so an id on the config could never be
+  //   replaced or cleared without a reload.
+  // - Read by the snippet itself, when it runs, rather than read by React and
+  //   inlined: the stored value never becomes part of the page, and it is
+  //   read at the last moment before the tag's first hit.
+  //
+  // If the app's session has lapsed without a sign-out, these pages keep
+  // reporting that id until the reader next opens an app page, which notices
+  // and forgets it. In its own function: the snippet runs as a top-level
+  // classic script, so a bare `var uid` would become window.uid for any other
+  // script to trip over.
+  const userSet =
+    `(function () { try { var uid = localStorage.getItem(${toScript(STORAGE_KEY_ANALYTICS_USER)});` +
+    ` if (uid) gtag('set', { user_id: uid }); } catch (e) {} })();`;
 
   return (
     <>
@@ -51,7 +118,8 @@ export function GoogleAnalytics() {
           function gtag(){dataLayer.push(arguments);}
           window.gtag = gtag;
           gtag('js', new Date());
-          gtag('config', '${measurementId}', { send_page_view: false });
+          ${userSet}
+          gtag('config', '${measurementId}', ${toScript(config)});
         `}
       </Script>
     </>
