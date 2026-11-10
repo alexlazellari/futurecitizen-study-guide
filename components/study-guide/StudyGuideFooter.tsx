@@ -14,6 +14,10 @@ export function StudyGuideFooter() {
             Clear study notes, fast practice, and mock tests designed for the
             Life in the UK exam.
           </p>
+          <p className="mt-3 max-w-sm text-sm text-slate-600 dark:text-slate-200">
+            FutureCitizen is an independent study site. It is not a government
+            website and is not part of the Home Office.
+          </p>
         </div>
 
         <div className="grid gap-8 sm:grid-cols-3">
